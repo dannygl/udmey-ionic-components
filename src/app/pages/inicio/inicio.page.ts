@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MenuController } from '@ionic/angular';
+import { Componente } from '../../interfaces/interfaces';
+import { Observable } from 'rxjs';
+import { DataService } from '../../services/data.service';
 
-interface Componente {
-  icon: string;
-  name: string;
-  redorectTo: string;
-}
 
 @Component({
   selector: 'app-inicio',
@@ -13,23 +12,17 @@ interface Componente {
 })
 export class InicioPage implements OnInit {
 
-  componentes: Componente[] = [
-    {
-      redorectTo: '/alert',
-      name: 'Alert',
-      icon: 'american-football'
-    },
-    {
-      redorectTo: '/action-sheet',
-      name: 'Action sheet',
-      icon: 'airplane-outline'
-    },
-  ];
+  componentes: Observable<Componente[]>;
 
-  constructor() {
-  }
+  constructor( private menuCtrl: MenuController,
+               private dataService: DataService ) { }
 
   ngOnInit() {
+    this.componentes = this.dataService.getMenuOpts();
+  }
+
+  mostrarMenu() {
+    this.menuCtrl.open('first');
   }
 
 }
